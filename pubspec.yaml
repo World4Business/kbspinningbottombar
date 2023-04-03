@@ -1,7 +1,7 @@
 name: kbspinningbottombar
 description: This is an easy to Implement Flutter Package for Spin Circle Bottom Navigation Bar
 version: 0.0.1
-homepage:
+homepage: https://github.com/World4Business/kbspinningbottombar.git
 
 environment:
   sdk: '>=2.19.5 <3.0.0'

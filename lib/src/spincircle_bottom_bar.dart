@@ -36,11 +36,13 @@ class SpinCircleBottomBarHolder extends StatelessWidget {
 class SpinCircleBottomBar extends StatefulWidget {
   final SCBottomBarDetails bottomNavigationBar;
 
-  SpinCircleBottomBar({Key? key, required this.bottomNavigationBar})
+  const SpinCircleBottomBar({Key? key, required this.bottomNavigationBar})
       : super(key: key);
 
   @override
-  _SpinCircleBottomBarState createState() => _SpinCircleBottomBarState();
+  State<SpinCircleBottomBar> createState() { // Avoid using private types in public APIs.
+    return _SpinCircleBottomBarState();
+  }
 }
 
 enum ExpansionStatus { open, close, idle }
@@ -242,7 +244,7 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                 width: 70,
                 height: bottomBarHeight,
                 alignment: Alignment.bottomCenter,
-                padding: actionButtonDetails.textPadding ?? EdgeInsets.only(right: 2),
+                padding: actionButtonDetails.textPadding ?? const EdgeInsets.only(right: 2),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -253,7 +255,7 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                         style: shouldOpen
                             ? activeTextStyle
                             : textStyle),
-                    SizedBox(height: 17,)
+                    const SizedBox(height: 17,)
                   ],
                 ),
               ),
@@ -303,7 +305,7 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                         child: Container(
                             width: actionButtonDetails.width ?? 50,
                             height: actionButtonDetails.height ?? 50,
-                            padding: actionButtonDetails.padding ?? EdgeInsets.all(10),
+                            padding: actionButtonDetails.padding ?? const EdgeInsets.all(10),
                             child: shouldOpen
                                 ? actionButtonDetails.closeWidget
                                 : actionButtonDetails.activeWidget),
