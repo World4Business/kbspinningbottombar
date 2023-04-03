@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 
 class SCBottomBarDetails {
@@ -74,14 +75,22 @@ class SCItem {
 
 class SCBottomBarItem {
   IconData? activeIcon;
-  IconData icon;
+  IconData? icon;
   String? title;
+  String? svgPicture;
+  double? width;
+  double? height;
+  BoxFit? boxFit;
   Function onPressed;
 
   SCBottomBarItem({
     this.activeIcon,
-    required this.icon,
+    this.icon,
+    this.svgPicture,
+    this.width,
+    this.height,
     this.title,
+    this.boxFit,
     required this.onPressed
   });
 }

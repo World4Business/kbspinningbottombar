@@ -55,6 +55,7 @@ class MyHomePage extends StatelessWidget {
                 SCBottomBarItem(
                     icon: Icons.supervised_user_circle,
                     title: "Details",
+
                     onPressed: () {}),
 
                 SCBottomBarItem(

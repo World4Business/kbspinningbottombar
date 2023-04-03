@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kbspinningbottombar/src/modals.dart';
 
 class SpinCircleBottomBarHolder extends StatelessWidget {
@@ -206,6 +207,15 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
+                                          itemDetails.svgPicture != null ? SvgPicture.asset(
+                                            itemDetails.svgPicture!,
+                                            colorFilter: ColorFilter.mode((isActive
+                                                ? activeIconTheme.color!
+                                                : iconTheme.color!), BlendMode.srcIn),
+                                            fit: itemDetails.boxFit ?? BoxFit.fill,
+                                            width: itemDetails.width,
+                                            height: itemDetails.height,
+                                          ) :
                                           Icon(
                                             isActive
                                                 ? itemDetails.activeIcon ??
