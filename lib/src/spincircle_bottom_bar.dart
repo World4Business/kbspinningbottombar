@@ -196,7 +196,7 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                 decoration: BoxDecoration(
                     color: expandableBottomBarDetails.backgroundColor ??
                         Colors.white,
-                    border: expandableBottomBarDetails.border ?? null,
+                    border: expandableBottomBarDetails.border,
                     boxShadow: expandableBottomBarDetails.shadow ??
                         [
                           BoxShadow(
@@ -240,12 +240,6 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                                                       ? itemDetails.svgPicture!
                                                       : itemDetails
                                                           .activeSvgPicture!),
-                                                  colorFilter: ColorFilter.mode(
-                                                      (isActive
-                                                          ? activeIconTheme
-                                                              .color!
-                                                          : iconTheme.color!),
-                                                      BlendMode.srcIn),
                                                   fit: itemDetails.boxFit ??
                                                       BoxFit.fill,
                                                   width: itemDetails.width,
