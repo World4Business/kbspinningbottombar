@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kbspinningbottombar/src/modals.dart';
 
-class SpinCircleBottomBarHolder extends StatelessWidget {
+class SpinCircleBottomBarHolder extends StatefulWidget {
   final SCBottomBarDetails bottomNavigationBar;
   final Widget child;
 
@@ -11,24 +11,45 @@ class SpinCircleBottomBarHolder extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<SpinCircleBottomBarHolder> createState() =>
+      _SpinCircleBottomBarHolderState();
+}
+
+class _SpinCircleBottomBarHolderState extends State<SpinCircleBottomBarHolder> {
+  bool expansionStatus = false;
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.expand,
       children: <Widget>[
         Column(
           children: <Widget>[
-            Expanded(child: child),
+            Expanded(child: widget.child),
             Container(
-              height: bottomNavigationBar.bnbHeight ?? 80,
+              height: widget.bottomNavigationBar.bnbHeight ?? 80,
             )
           ],
+        ),
+        if(expansionStatus == true)
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: (MediaQuery.of(context).size.width -
+              (widget.bottomNavigationBar.bnbHeight ?? 80)),
+          color: (widget.bottomNavigationBar.planColor != null)
+              ? widget.bottomNavigationBar.planColor
+              : Colors.black26,
         ),
         Positioned(
             bottom: 0,
             left: 0,
             child: SpinCircleBottomBar(
-              bottomNavigationBar: bottomNavigationBar,
-            ))
+                bottomNavigationBar: widget.bottomNavigationBar,
+                isChange: (openornot) {
+                  setState(() {
+                    expansionStatus = openornot;
+                  });
+                }))
       ],
     );
   }
@@ -36,12 +57,15 @@ class SpinCircleBottomBarHolder extends StatelessWidget {
 
 class SpinCircleBottomBar extends StatefulWidget {
   final SCBottomBarDetails bottomNavigationBar;
+  final Function isChange;
 
-  const SpinCircleBottomBar({Key? key, required this.bottomNavigationBar})
+  const SpinCircleBottomBar(
+      {Key? key, required this.bottomNavigationBar, required this.isChange})
       : super(key: key);
 
   @override
-  State<SpinCircleBottomBar> createState() { // Avoid using private types in public APIs.
+  State<SpinCircleBottomBar> createState() {
+    // Avoid using private types in public APIs.
     return _SpinCircleBottomBarState();
   }
 }
@@ -95,7 +119,6 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
           fit: StackFit.expand,
           clipBehavior: Clip.none,
           children: <Widget>[
-
             if (expansionStatus != ExpansionStatus.idle) ...[
               SizedBox(
                   width: width,
@@ -173,6 +196,7 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                 decoration: BoxDecoration(
                     color: expandableBottomBarDetails.backgroundColor ??
                         Colors.white,
+                    border: expandableBottomBarDetails.border ?? null,
                     boxShadow: expandableBottomBarDetails.shadow ??
                         [
                           BoxShadow(
@@ -207,27 +231,39 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
-                                          itemDetails.svgPicture != null ? SvgPicture.asset(
-                                            itemDetails.svgPicture!,
-                                            colorFilter: ColorFilter.mode((isActive
-                                                ? activeIconTheme.color!
-                                                : iconTheme.color!), BlendMode.srcIn),
-                                            fit: itemDetails.boxFit ?? BoxFit.fill,
-                                            width: itemDetails.width,
-                                            height: itemDetails.height,
-                                          ) :
-                                          Icon(
-                                            isActive
-                                                ? itemDetails.activeIcon ??
-                                                    itemDetails.icon
-                                                : itemDetails.icon,
-                                            color: isActive
-                                                ? activeIconTheme.color
-                                                : iconTheme.color,
-                                            size: isActive
-                                                ? activeIconTheme.size
-                                                : iconTheme.size,
-                                          ),
+                                          (itemDetails.svgPicture != null &&
+                                                  itemDetails
+                                                          .activeSvgPicture !=
+                                                      null)
+                                              ? SvgPicture.asset(
+                                                  (isActive
+                                                      ? itemDetails.svgPicture!
+                                                      : itemDetails
+                                                          .activeSvgPicture!),
+                                                  colorFilter: ColorFilter.mode(
+                                                      (isActive
+                                                          ? activeIconTheme
+                                                              .color!
+                                                          : iconTheme.color!),
+                                                      BlendMode.srcIn),
+                                                  fit: itemDetails.boxFit ??
+                                                      BoxFit.fill,
+                                                  width: itemDetails.width,
+                                                  height: itemDetails.height,
+                                                )
+                                              : Icon(
+                                                  isActive
+                                                      ? itemDetails
+                                                              .activeIcon ??
+                                                          itemDetails.icon
+                                                      : itemDetails.icon,
+                                                  color: isActive
+                                                      ? activeIconTheme.color
+                                                      : iconTheme.color,
+                                                  size: isActive
+                                                      ? activeIconTheme.size
+                                                      : iconTheme.size,
+                                                ),
                                           itemDetails.title != null
                                               ? Text(itemDetails.title ?? "",
                                                   style: isActive
@@ -245,31 +281,32 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                 ),
               ),
             ),
-            if(actionButtonDetails.actionButtonText != null)
-            Container(
-              height: bottomBarHeight * 2,
-              width: MediaQuery.of(context).size.width,
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: 70,
-                height: bottomBarHeight,
+            if (actionButtonDetails.actionButtonText != null)
+              Container(
+                height: bottomBarHeight * 2,
+                width: MediaQuery.of(context).size.width,
                 alignment: Alignment.bottomCenter,
-                padding: actionButtonDetails.textPadding ?? const EdgeInsets.only(right: 2),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(actionButtonDetails.actionButtonText!,
-                        textAlign: TextAlign.center,
-                        style: shouldOpen
-                            ? activeTextStyle
-                            : textStyle),
-                    const SizedBox(height: 17,)
-                  ],
+                child: Container(
+                  width: 70,
+                  height: bottomBarHeight,
+                  alignment: Alignment.bottomCenter,
+                  padding: actionButtonDetails.textPadding ??
+                      const EdgeInsets.only(right: 2),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(actionButtonDetails.actionButtonText!,
+                          textAlign: TextAlign.center,
+                          style: shouldOpen ? activeTextStyle : textStyle),
+                      const SizedBox(
+                        height: 17,
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
             Container(
                 height: bottomBarHeight * 2,
                 width: MediaQuery.of(context).size.width,
@@ -291,31 +328,41 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                     width: actionButtonDetails.width ?? 50,
                     height: actionButtonDetails.height ?? 50,
                     decoration: BoxDecoration(
-                      borderRadius: actionButtonDetails.borderRadius ?? BorderRadius.circular(500),
-                      border: actionButtonDetails.border,
-                      boxShadow: actionButtonDetails.boxShadow,
-                      color: Colors.red
-                    ),
+                        borderRadius: actionButtonDetails.borderRadius ??
+                            BorderRadius.circular(500),
+                        border: actionButtonDetails.border,
+                        boxShadow: actionButtonDetails.boxShadow,
+                        color:
+                            actionButtonDetails.backgorundColor ?? Colors.red),
                     child: Material(
                       color: Colors.transparent,
-                      borderRadius: actionButtonDetails.borderRadius ?? BorderRadius.circular(500),
+                      borderRadius: actionButtonDetails.borderRadius ??
+                          BorderRadius.circular(500),
                       child: InkWell(
-                        onTap: (){
+                        onTap: () {
                           if (expansionStatus == ExpansionStatus.idle) {
                             setState(() {
                               expansionStatus = ExpansionStatus.open;
+                              widget.isChange(true);
                             });
+
                           } else {
                             setState(() {
-                              expansionStatus = (expansionStatus == ExpansionStatus.open) ? ExpansionStatus.close : ExpansionStatus.open;
+                              expansionStatus =
+                                  (expansionStatus == ExpansionStatus.open)
+                                      ? ExpansionStatus.close
+                                      : ExpansionStatus.open;
+                              widget.isChange(((expansionStatus == ExpansionStatus.open) ? true : false));
                             });
                           }
                         },
-                        borderRadius: actionButtonDetails.borderRadius ?? BorderRadius.circular(500),
+                        borderRadius: actionButtonDetails.borderRadius ??
+                            BorderRadius.circular(500),
                         child: Container(
                             width: actionButtonDetails.width ?? 50,
                             height: actionButtonDetails.height ?? 50,
-                            padding: actionButtonDetails.padding ?? const EdgeInsets.all(10),
+                            padding: actionButtonDetails.padding ??
+                                const EdgeInsets.all(10),
                             child: shouldOpen
                                 ? actionButtonDetails.closeWidget
                                 : actionButtonDetails.activeWidget),
@@ -323,7 +370,6 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                     ),
                   ),
                 )),
-
           ],
         ));
   }

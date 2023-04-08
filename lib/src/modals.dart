@@ -14,12 +14,14 @@ class SCBottomBarDetails {
   SCActionButtonDetails actionButtonDetails;
   double? bnbHeight;
   List<BoxShadow>? shadow;
-  ShapeBorder? centerButtonShape;
+  Border? border;
+  Color? planColor;
 
   SCBottomBarDetails({
     required this.items,
     required this.circleItems,
     this.bnbHeight,
+    this.planColor,
     required this.actionButtonDetails,
     this.activeIconTheme,
     this.iconTheme,
@@ -27,8 +29,8 @@ class SCBottomBarDetails {
     this.titleStyle,
     this.circleColors,
     this.shadow,
+    this.border,
     this.backgroundColor,
-    this.centerButtonShape,
     this.elevation
   });
 }
@@ -46,6 +48,7 @@ class SCActionButtonDetails{
   Border? border;
   List<BoxShadow>? boxShadow;
   String? actionButtonText;
+  Color? backgorundColor;
 
   SCActionButtonDetails({
     required this.activeWidget,
@@ -57,13 +60,14 @@ class SCActionButtonDetails{
     this.textPadding,
     this.margin,
     this.borderRadius,
+    this.backgorundColor,
     this.border,
     this.boxShadow
   });
 }
 
 class SCItem {
-  Icon icon;
+  Widget icon;
   void Function() onPressed;
 
   SCItem({
@@ -77,6 +81,7 @@ class SCBottomBarItem {
   IconData? icon;
   String? title;
   String? svgPicture;
+  String? activeSvgPicture;
   double? width;
   double? height;
   BoxFit? boxFit;
@@ -86,6 +91,7 @@ class SCBottomBarItem {
     this.activeIcon,
     this.icon,
     this.svgPicture,
+    this.activeSvgPicture,
     this.width,
     this.height,
     this.title,
