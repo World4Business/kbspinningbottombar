@@ -10,3 +10,7 @@
 ## 0.0.3
 
 * TODO: Give Back Drop When center menu open and some minor bug fixing
+
+## 1.4
+
+* TODO: Change Version and fix bugs
