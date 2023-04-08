@@ -237,9 +237,9 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                                                       null)
                                               ? SvgPicture.asset(
                                                   (isActive
-                                                      ? itemDetails.svgPicture!
+                                                      ? itemDetails.activeSvgPicture!
                                                       : itemDetails
-                                                          .activeSvgPicture!),
+                                                          .svgPicture!),
                                                   fit: itemDetails.boxFit ??
                                                       BoxFit.fill,
                                                   width: itemDetails.width,
