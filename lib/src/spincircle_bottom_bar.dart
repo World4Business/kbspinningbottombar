@@ -18,6 +18,13 @@ class SpinCircleBottomBarHolder extends StatefulWidget {
 class _SpinCircleBottomBarHolderState extends State<SpinCircleBottomBarHolder> {
   bool expansionStatus = false;
 
+
+  @override
+  void didUpdateWidget(SpinCircleBottomBarHolder oldWidget) {
+      setState((){});
+      super.didUpdateWidget(oldWidget);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -80,13 +87,26 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
   @override
   void initState() {
     super.initState();
-
+    activeIndex = widget.bottomNavigationBar.selected ?? 0;
     expandableBottomBarDetails = widget.bottomNavigationBar;
+
     expandableBottomBarDetails.items
         .insert((expandableBottomBarDetails.items.length / 2).floor(), null);
     expandableBottomBarDetails.circleColors =
         expandableBottomBarDetails.circleColors ??
             [Colors.white, Colors.blue, Colors.red];
+  }
+
+
+  @override
+  void didUpdateWidget(SpinCircleBottomBar oldWidget) {
+    if(widget.bottomNavigationBar.selected != null) {
+      setState(() {
+        activeIndex = widget.bottomNavigationBar.selected!;
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+
   }
 
   @override
@@ -334,21 +354,29 @@ class _SpinCircleBottomBarState extends State<SpinCircleBottomBar> {
                           BorderRadius.circular(500),
                       child: InkWell(
                         onTap: () {
-                          if (expansionStatus == ExpansionStatus.idle) {
-                            setState(() {
-                              expansionStatus = ExpansionStatus.open;
-                              widget.isChange(true);
-                            });
+                          if(actionButtonDetails.isButton == false) {
+                            if (expansionStatus == ExpansionStatus.idle) {
+                              setState(() {
+                                expansionStatus = ExpansionStatus.open;
+                                widget.isChange(true);
+                              });
 
-                          } else {
-                            setState(() {
-                              expansionStatus =
-                                  (expansionStatus == ExpansionStatus.open)
-                                      ? ExpansionStatus.close
-                                      : ExpansionStatus.open;
-                              widget.isChange(((expansionStatus == ExpansionStatus.open) ? true : false));
-                            });
+                            } else {
+                              setState(() {
+                                expansionStatus =
+                                (expansionStatus == ExpansionStatus.open)
+                                    ? ExpansionStatus.close
+                                    : ExpansionStatus.open;
+                                widget.isChange(((expansionStatus == ExpansionStatus.open) ? true : false));
+                              });
+                            }
                           }
+                          else {
+                            if(actionButtonDetails.onTap != null) {
+                              actionButtonDetails.onTap!();
+                            }
+                          }
+
                         },
                         borderRadius: actionButtonDetails.borderRadius ??
                             BorderRadius.circular(500),

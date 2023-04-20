@@ -16,6 +16,8 @@ class SCBottomBarDetails {
   List<BoxShadow>? shadow;
   Border? border;
   Color? planColor;
+  int? selected;
+
 
   SCBottomBarDetails({
     required this.items,
@@ -26,6 +28,7 @@ class SCBottomBarDetails {
     this.activeIconTheme,
     this.iconTheme,
     this.activeTitleStyle,
+    this.selected,
     this.titleStyle,
     this.circleColors,
     this.shadow,
@@ -49,10 +52,14 @@ class SCActionButtonDetails{
   List<BoxShadow>? boxShadow;
   String? actionButtonText;
   Color? backgorundColor;
+  bool isButton;
+  Function? onTap;
 
   SCActionButtonDetails({
     required this.activeWidget,
     required this.closeWidget,
+    required this.isButton,
+    this.onTap,
     this.width,
     this.height,
     this.actionButtonText,
@@ -86,6 +93,7 @@ class SCBottomBarItem {
   double? height;
   BoxFit? boxFit;
   Function onPressed;
+
 
   SCBottomBarItem({
     this.activeIcon,
